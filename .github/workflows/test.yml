@@ -20,12 +20,12 @@ jobs:
        $VerbosePreference = 'Continue'
        Install-Module ExchangeOnlineManagement -Force
        Import-Module ExchangeOnlineManagement -Force
-       $GlobalAdminPassword = ConvertTo-SecureString $env:PUBLIC_PASSWORD -AsPlainText -Force
-       $GlobalAdminAccount = New-Object System.Management.Automation.PSCredential ($env:PUBLIC_USERNAME, $GlobalAdminPassword)
+       $GlobalAdminPassword = ConvertTo-SecureString "$env:PUBLIC_PASSWORD" -AsPlainText -Force
+       $GlobalAdminAccount = New-Object System.Management.Automation.PSCredential ("$env:PUBLIC_USERNAME", $GlobalAdminPassword)
        Install-Module MSCloudLoginAssistantPreview -Force
        Import-Module MSCloudLoginAssistantPreview
        Write-Verbose -Message "Trying to connect to SC "
-       Write-Verbose -Message $env:PUBLIC_USERNAME
+       Write-Verbose -Message "$env:PUBLIC_USERNAME"
        Test-MSCloudLogin -Platform SecurityComplianceCenter -CloudCredential $GlobalAdminAccount -Verbose
        Write-Verbose -Message "Connected to SC"
        #Export-M365DSCConfiguration -Quiet -GlobalAdminAccount $GlobalAdminAccount -Path "." -FileName 'ExtractedSPO.ps1' -Workload 'SC' -Verbose
