@@ -10,7 +10,6 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
     - name: Test Connection to SC  
       shell : powershell  
       env:
@@ -19,7 +18,8 @@ jobs:
       run: |
        $VerbosePReference = 'Continue'
        Install-Module MSCloudLoginAssistant -Force
+       Import-Module MSCloudLoginAssistant
        Write-Verbose -Message "Trying to connect to SC"
-       Test-MSCloudLogin -Platform SecurityComplianceCenter -CloudCredential $GlobalAdminAccount
+       Test-MSCloudLogin -Platform SecurityComplianceCenter -CloudCredential $GlobalAdminAccount -Verbose
        Write-Verbose -Message "Connected to SC"
        #Export-M365DSCConfiguration -Quiet -GlobalAdminAccount $GlobalAdminAccount -Path "." -FileName 'ExtractedSPO.ps1' -Workload 'SC' -Verbose
