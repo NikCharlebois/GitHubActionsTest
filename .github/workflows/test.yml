@@ -1,4 +1,4 @@
-name: AzureCloud - Full-Circle - SC
+name: Test Connection to Security and Compliance Center
 on: [push]
 
 jobs:
