@@ -17,8 +17,8 @@ jobs:
         PUBLIC_PASSWORD: ${{ secrets.PUBLIC_PASSWORD }} 
       run: |
        $VerbosePReference = 'Continue'
-       Install-Module MSCloudLoginAssistant -Force
-       Import-Module MSCloudLoginAssistant
+       Install-Module MSCloudLoginAssistantPreview -Force
+       Import-Module MSCloudLoginAssistantPreview
        Write-Verbose -Message "Trying to connect to SC"
        Test-MSCloudLogin -Platform SecurityComplianceCenter -CloudCredential $GlobalAdminAccount -Verbose
        Write-Verbose -Message "Connected to SC"
