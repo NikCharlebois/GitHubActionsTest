@@ -19,7 +19,7 @@ jobs:
        $VerbosePReference = 'Continue'
        Install-Module MSCloudLoginAssistantPreview -Force
        Import-Module MSCloudLoginAssistantPreview
-       Write-Verbose -Message "Trying to connect to SC"
+       Write-Verbose -Message "Trying to connect to SC "
        Test-MSCloudLogin -Platform SecurityComplianceCenter -CloudCredential $GlobalAdminAccount -Verbose
        Write-Verbose -Message "Connected to SC"
        #Export-M365DSCConfiguration -Quiet -GlobalAdminAccount $GlobalAdminAccount -Path "." -FileName 'ExtractedSPO.ps1' -Workload 'SC' -Verbose
