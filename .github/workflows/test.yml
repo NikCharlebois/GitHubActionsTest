@@ -27,7 +27,7 @@ jobs:
        $GlobalAdminAccount = New-Object System.Management.Automation.PSCredential ($env:PUBLIC_USERNAME, $GlobalAdminPassword)
        Connect-AzAccount -Environment AzureCloud -Credential $GlobalAdminAccount -SkipContextPopulation -ErrorAction Stop -Verbose
        $VerbosePreference = 'Continue'
-       Write-Verbose "$($env:PUBLIC_USERNAME.Length) --- $($env:PUBLIC_PASSWORD.Length)"
+       Write-Verbose "$($GlobalAdminAccount.UserName.Length) --- $($GlobalAdminAccount.Password.Length)"
        Disconnect-AZAccount
        Write-Verbose -Message "ASSEMBLY: $assembly"
        Connect-IPPSSession -Credential $GlobalAdminAccount -Verbose
