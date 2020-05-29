@@ -19,7 +19,11 @@ jobs:
        Install-Module ExchangeOnlineManagement -Force
        Import-Module ExchangeOnlineManagement -Force       
        Install-Module Az.Accounts -Force -RequiredVersion 1.7.4
-       Import-Module Az.Accounts -Force
+       Import-Module Az.Accounts -Force   
+    - name: Uninstall AzureRM
+      shell: powershell
+      run: |        
+       Uninstall-AzureRM
     - name: Get Module Info
       shell: powershell
       run: |        
