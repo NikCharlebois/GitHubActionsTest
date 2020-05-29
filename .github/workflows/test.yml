@@ -26,7 +26,6 @@ jobs:
         PUBLIC_USERNAME: ${{ secrets.PUBLIC_USERNAME }} 
         PUBLIC_PASSWORD: ${{ secrets.PUBLIC_PASSWORD }} 
       run: |
-       $VerbosePreference = 'Continue'
        Get-Module
        $GlobalAdminPassword = ConvertTo-SecureString $env:PUBLIC_PASSWORD -AsPlainText -Force
        $GlobalAdminAccount = New-Object System.Management.Automation.PSCredential ($env:PUBLIC_USERNAME, $GlobalAdminPassword)
