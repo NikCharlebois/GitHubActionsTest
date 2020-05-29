@@ -24,10 +24,10 @@ jobs:
       shell: powershell
       run: |        
        $modules = Get-Module
-       $InformationPreference = 'Continue'
+       $VerbosePreference = 'Continue'
        foreach ($module in $modules)
        {
-           Write-Information "Name = $($module.Name); Version = $($module.Version);"
+           Write-Verbose -Message "Name = $($module.Name); Version = $($module.Version);"
        } 
     - name: Test Connect - PSCredential
       shell: powershell
