@@ -9,7 +9,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will ert okf t
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job caess it
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job caess itd
     - uses: actions/checkout@v2
     - name: Install Modules 
       shell: powershell
