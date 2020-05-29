@@ -25,7 +25,7 @@ jobs:
        Install-Module MSCloudLoginAssistantPreview -Force
        Import-Module MSCloudLoginAssistantPreview
     - name: Test COnnect to Connect
-    - shell: powershell
+      shell: powershell
       run: |
        Write-Verbose -Message "Trying to connect to SC "
        Write-Verbose -Message $env:PUBLIC_USERNAME
