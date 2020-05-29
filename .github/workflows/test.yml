@@ -12,10 +12,7 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job caess it
     - uses: actions/checkout@v2
     - name: Install Modules 
-      shell: powershell  
-      env:
-        PUBLIC_USERNAME: ${{ secrets.PUBLIC_USERNAME }} 
-        PUBLIC_PASSWORD: ${{ secrets.PUBLIC_PASSWORD }} 
+      shell: powershell
       run: |
        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
        Set-ExecutionPolicy Unrestricted -Force
@@ -26,6 +23,9 @@ jobs:
        Import-Module MSCloudLoginAssistantPreview
     - name: Test COnnect to Connect
       shell: powershell
+      env:
+        PUBLIC_USERNAME: ${{ secrets.PUBLIC_USERNAME }} 
+        PUBLIC_PASSWORD: ${{ secrets.PUBLIC_PASSWORD }} 
       run: |
        Write-Verbose -Message "Trying to connect to SC "
        Write-Verbose -Message $env:PUBLIC_USERNAME
