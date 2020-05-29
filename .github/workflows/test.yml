@@ -19,7 +19,7 @@ jobs:
        Install-Module ExchangeOnlineManagement -Force
        Import-Module ExchangeOnlineManagement -Force       
        Install-Module MSCloudLoginAssistantPreview -Force
-       Install-Module Az.Accounts -Force
+       Install-Module Az.Accounts -Force -RequiredVersion 1.7.4
        Import-Module Az.Accounts -Force
        Import-Module MSCloudLoginAssistantPreview
     - name: Test Connect - PSCredential
