@@ -34,4 +34,4 @@ jobs:
        Connect-AzAccount -Environment AzureCloud -Credential $GlobalAdminAccount -SkipContextPopulation -ErrorAction Stop -Verbose
        $assembly = [Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext].Assembly | fl * | Out-String
        Write-Verbose -Message "ASSEMBLY: $assembly"
-       Connect-IPPSSession -Credential $GlobalAdminAccount
+       Connect-IPPSSession -Credential $GlobalAdminAccount -Verbose
