@@ -32,27 +32,6 @@ jobs:
        $GlobalAdminPassword = ConvertTo-SecureString $env:PUBLIC_PASSWORD -AsPlainText -Force
        $GlobalAdminAccount = New-Object System.Management.Automation.PSCredential ($env:PUBLIC_USERNAME, $GlobalAdminPassword)
        Connect-AzAccount -Credential $GlobalAdminAccount -Environment 'AzureCloud' -SkipContextPopulation -ErrorAction Stop
-       Connect-IPPSSession -Credential $GlobalAdminAccount
-    - name: Uninstall AzureRM
-      shell: powershell
-      run: |        
-       Uninstall-AzureRM
-    - name: Get Module Info
-      shell: powershell
-      run: |        
-       $modules = Get-Module -ListAvailable
-       $VerbosePreference = 'Continue'
-       foreach ($module in $modules)
-       {
-           Write-Verbose -Message "Name = $($module.Name); Version = $($module.Version);"
-       } 
-    - name: Test Connect - PSCredential
-      shell: powershell
-      env:
-        PUBLIC_USERNAME: ${{ secrets.PUBLIC_USERNAME }} 
-        PUBLIC_PASSWORD: ${{ secrets.PUBLIC_PASSWORD }} 
-      run: |
-       $GlobalAdminPassword = ConvertTo-SecureString $env:PUBLIC_PASSWORD -AsPlainText -Force
-       $GlobalAdminAccount = New-Object System.Management.Automation.PSCredential ($env:PUBLIC_USERNAME, $GlobalAdminPassword)
-       Connect-AzAccount -Credential $GlobalAdminAccount -Environment 'AzureCloud' -SkipContextPopulation -ErrorAction Stop
+       $assembly = [Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext].Assembly
+       Write-Verbose -Message "ASSEMBLY: $($assembly.Location) VERSION: $($assembly.Version)" 
        Connect-IPPSSession -Credential $GlobalAdminAccount
