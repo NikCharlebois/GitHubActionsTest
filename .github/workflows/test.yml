@@ -16,13 +16,16 @@ jobs:
       run: |
        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
        Set-ExecutionPolicy Unrestricted -Force
-       Uninstall-AzureRm
        Install-Module ExchangeOnlineManagement -Force
        Import-Module ExchangeOnlineManagement -Force       
        Install-Module MSCloudLoginAssistantPreview -Force
        Install-Module Az.Accounts -Force -RequiredVersion 1.7.4
        Import-Module Az.Accounts -Force
        Import-Module MSCloudLoginAssistantPreview
+    - name: Uninstall AzureRM
+      shell: powershell
+      run: |        
+       Uninstall-AzureRm
     - name: Test Connect - PSCredential
       shell: powershell
       env:
