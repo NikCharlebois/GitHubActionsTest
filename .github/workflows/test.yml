@@ -20,6 +20,12 @@ jobs:
        Import-Module Az.Accounts -Force   
        Install-Module ExchangeOnlineManagement -Force
        Import-Module ExchangeOnlineManagement -Force   
+       $modules = Get-Module
+       $VerbosePreference = 'Continue'
+       foreach ($module in $modules)
+       {
+           Write-Verbose -Message "Name = $($module.Name); Version = $($module.Version);"
+       } 
     - name: Uninstall AzureRM
       shell: powershell
       run: |        
