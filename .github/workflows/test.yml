@@ -23,7 +23,7 @@ jobs:
     - name: Get Module Info
       shell: powershell
       run: |        
-       $modules = Get-Module
+       $modules = Get-Module -ListAvailable
        $VerbosePreference = 'Continue'
        foreach ($module in $modules)
        {
