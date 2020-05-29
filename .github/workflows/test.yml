@@ -13,6 +13,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install Modules 
       shell: powershell
+      env:
+        PUBLIC_USERNAME: ${{ secrets.PUBLIC_USERNAME }} 
+        PUBLIC_PASSWORD: ${{ secrets.PUBLIC_PASSWORD }} 
       run: |
        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
        Set-ExecutionPolicy Unrestricted -Force    
@@ -26,6 +29,10 @@ jobs:
        {
            Write-Verbose -Message "Name = $($module.Name); Version = $($module.Version);"
        } 
+       $GlobalAdminPassword = ConvertTo-SecureString $env:PUBLIC_PASSWORD -AsPlainText -Force
+       $GlobalAdminAccount = New-Object System.Management.Automation.PSCredential ($env:PUBLIC_USERNAME, $GlobalAdminPassword)
+       Connect-AzAccount -Credential $GlobalAdminAccount -Environment 'AzureCloud' -SkipContextPopulation -ErrorAction Stop
+       Connect-IPPSSession -Credential $GlobalAdminAccount
     - name: Uninstall AzureRM
       shell: powershell
       run: |        
