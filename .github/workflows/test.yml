@@ -22,16 +22,12 @@ jobs:
        Install-Module Az.Accounts -Force -RequiredVersion 1.7.4
        Import-Module Az.Accounts -Force   
        Install-Module ExchangeOnlineManagement -Force
-       Import-Module ExchangeOnlineManagement -Force   
-       $modules = Get-Module
-       $VerbosePreference = 'Continue'
-       foreach ($module in $modules)
-       {
-           Write-Verbose -Message "Name = $($module.Name); Version = $($module.Version);"
-       } 
+       Import-Module ExchangeOnlineManagement -Force  
        $GlobalAdminPassword = ConvertTo-SecureString $env:PUBLIC_PASSWORD -AsPlainText -Force
        $GlobalAdminAccount = New-Object System.Management.Automation.PSCredential ($env:PUBLIC_USERNAME, $GlobalAdminPassword)
        Connect-AzAccount -Environment AzureCloud -Credential $GlobalAdminAccount -SkipContextPopulation -ErrorAction Stop -Verbose
-       $assembly = [Microsoft.IdentityModel.Clients.ActiveDirectory.AuthenticationContext].Assembly | fl * | Out-String
+       $VerbosePreference = 'Continue'
+       Write-Verbose "$($env:PUBLIC_USERNAME.Length) --- $($env:PUBLIC_PASSWORD.Length)"
+       Disconnect-AZAccount
        Write-Verbose -Message "ASSEMBLY: $assembly"
        Connect-IPPSSession -Credential $GlobalAdminAccount -Verbose
