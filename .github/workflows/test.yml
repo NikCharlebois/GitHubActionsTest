@@ -16,6 +16,7 @@ jobs:
       run: |
        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
        Set-ExecutionPolicy Unrestricted -Force
+       Uninstall-AzureRm
        Install-Module ExchangeOnlineManagement -Force
        Import-Module ExchangeOnlineManagement -Force       
        Install-Module MSCloudLoginAssistantPreview -Force
