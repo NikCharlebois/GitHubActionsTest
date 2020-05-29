@@ -16,29 +16,16 @@ jobs:
       run: |
        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
        Set-ExecutionPolicy Unrestricted -Force
-       $VerbosePreference = 'Continue'
        Install-Module ExchangeOnlineManagement -Force
        Import-Module ExchangeOnlineManagement -Force       
        Install-Module MSCloudLoginAssistantPreview -Force
        Import-Module MSCloudLoginAssistantPreview
-   # - name: Test Connect - PSCredential
-   #   shell: powershell
-   #   env:
-   #     PUBLIC_USERNAME: ${{ secrets.PUBLIC_USERNAME }} 
-   #     PUBLIC_PASSWORD: ${{ secrets.PUBLIC_PASSWORD }} 
-   #   run: |
-   #    Write-Verbose -Message "Trying to connect to SC "
-   #    Write-Verbose -Message $env:PUBLIC_USERNAME
-   #    $GlobalAdminPassword = ConvertTo-SecureString $env:PUBLIC_PASSWORD -AsPlainText -Force
-   #    $GlobalAdminAccount = New-Object System.Management.Automation.PSCredential ($env:PUBLIC_USERNAME, $GlobalAdminPassword)
-   #    Test-MSCloudLogin -Platform SecurityComplianceCenter -CloudCredential $GlobalAdminAccount -Verbose
-   #    Write-Verbose -Message "Connected to SC"
-   #    #Export-M365DSCConfiguration -Quiet -GlobalAdminAccount $GlobalAdminAccount -Path "." -FileName 'ExtractedSPO.ps1' -Workload 'SC' -Verbose
-    - name: Test Connect - Plain text Username and Password
+    - name: Test Connect - PSCredential
       shell: powershell
       env:
         PUBLIC_USERNAME: ${{ secrets.PUBLIC_USERNAME }} 
         PUBLIC_PASSWORD: ${{ secrets.PUBLIC_PASSWORD }} 
       run: |
-       Test-MSCloudLogin -Platform SecurityComplianceCenter -UserName $env:PUBLIC_USERNAME -Password $env:PUBLIC_PASSWORD -Verbose
-       Write-Verbose -Message "Connected to SC"
+       $GlobalAdminPassword = ConvertTo-SecureString $env:PUBLIC_PASSWORD -AsPlainText -Force
+       $GlobalAdminAccount = New-Object System.Management.Automation.PSCredential ($env:PUBLIC_USERNAME, $GlobalAdminPassword)
+       Test-MSCloudLogin -Platform SecurityComplianceCenter -CloudCredential $GlobalAdminAccount -Verbose
