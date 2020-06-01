@@ -13,6 +13,8 @@ jobs:
     - name: Install Modules 
       shell: powershell
       run: |
+      git clone https://github.com/PowerShell/DscResource.Tests
+       npm --silent install
        winrm quickconfig -force
        Install-Module AzureADPreview -RequiredVersion 2.0.2.102 -Force -SkipPublisherCheck
        Install-Module ExchangeOnlineManagement -RequiredVersion 0.4578.0 -Force -SkipPublisherCheck
@@ -37,9 +39,6 @@ jobs:
        Import-Module AzureADPreview -Force
        Import-Module MicrosoftTeams -Force
        [System.Environment]::SetEnvironmentVariable('M365DSCTelemetryEnabled', $false, [System.EnvironmentVariableTarget]::Machine)
-        
-       git clone https://github.com/PowerShell/DscResource.Tests
-       npm --silent install
        Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
        Invoke-AppveyorInstallTask
        $dir = dir |out-String
