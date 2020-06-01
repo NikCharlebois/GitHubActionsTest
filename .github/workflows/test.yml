@@ -9,15 +9,18 @@ jobs:
 
     # Steps represent a sequence of tasks that will ert okf t
     steps:
+    - name: Setup
+      shell: powershell
+      run: |
+        git clone https://github.com/PowerShell/DscResource.Tests
+        npm --silent install
+        Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
+        Invoke-AppveyorInstallTask
     # Checks-out your repository under $GITHUB_WORKSPACE, so your jokkb caess itd
     - uses: actions/checkout@v2
     - name: Install Modules 
       shell: powershell
       run: |
-       git clone https://github.com/PowerShell/DscResource.Tests
-       npm --silent install
-       Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
-       Invoke-AppveyorInstallTask
        $dir = dir |out-String
        $InformationPreference = 'Continue'
        Write-Information $dir
