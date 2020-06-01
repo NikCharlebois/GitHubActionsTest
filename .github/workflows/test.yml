@@ -40,13 +40,14 @@ jobs:
        Import-Module MicrosoftTeams -Force
        [System.Environment]::SetEnvironmentVariable('M365DSCTelemetryEnabled', $false, [System.EnvironmentVariableTarget]::Machine)
        Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
-       Invoke-AppveyorInstallTask
+       Invoke-AppveyorInstallTask -Verbose
        $dir = dir |out-String
        $InformationPreference = 'Continue'
        Write-Information $dir
        Write-Information "Here"
        $env:APPVEYOR_BUILD_FOLDER = "."
+       $VerbosePreference = 'Continue'
        Invoke-AppveyorTestScriptTask `
             -Type 'Harness' `
             -MainModulePath "Modules\Microsoft365DSC" `
-            -CodeCovIo
+            -CodeCovIo -Verbose
