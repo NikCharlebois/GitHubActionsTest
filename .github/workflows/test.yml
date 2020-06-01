@@ -46,8 +46,7 @@ jobs:
        Write-Information $dir
        Write-Information "Here"
        $env:APPVEYOR_BUILD_FOLDER = "."
-       $VerbosePreference = 'Continue'
        Invoke-AppveyorTestScriptTask `
             -Type 'Harness' `
             -MainModulePath "Modules\Microsoft365DSC" `
-            -CodeCovIo -Verbose
+            -CodeCovIo
