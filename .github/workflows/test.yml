@@ -15,3 +15,4 @@ jobs:
       shell: powershell
       run: |
        git clone https://github.com/PowerShell/DscResource.Tests
+       npm --silent install
