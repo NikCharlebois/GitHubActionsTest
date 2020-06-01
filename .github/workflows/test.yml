@@ -48,5 +48,5 @@ jobs:
        $env:APPVEYOR_BUILD_FOLDER = Get-Location | select -ExpandProperty Path
        Invoke-AppveyorTestScriptTask `
             -Type 'Harness' `
-            -MainModulePath './modules/microsoft365dsc' `
+            -MainModulePath 'Modules\Microsoft365DSC' `
             -CodeCovIo -Verbose
