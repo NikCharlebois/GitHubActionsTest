@@ -18,8 +18,9 @@ jobs:
        npm --silent install
        Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
        Invoke-AppveyorInstallTask
-       dir
+       $dir = dir |out-String
        $InformationPreference = 'Continue'
+       Write-Information $dir
        Write-Information "Here"
        Invoke-AppveyorTestScriptTask `
             -Type 'Harness' `
