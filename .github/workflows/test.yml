@@ -18,7 +18,9 @@ jobs:
        npm --silent install
        Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
        Invoke-AppveyorInstallTask
-       ls
+       dir
+       $InformationPreference = 'Continue'
+       Write-Information "Here"
        Invoke-AppveyorTestScriptTask `
             -Type 'Harness' `
             -MainModulePath "Modules\Microsoft365DSC" `
