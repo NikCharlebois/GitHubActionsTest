@@ -14,7 +14,8 @@ jobs:
     - name: Install Modules 
       shell: powershell
       run: |
+       $VerbosePreference = 'Continue'
        git clone https://github.com/PowerShell/DscResource.Tests
        npm --silent install
-       Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
-       Invoke-AppveyorInstallTask
+       Import-Module -Name "./DscResource.Tests/AppVeyor.psm1" -Verbose
+       Invoke-AppveyorInstallTask -Verbose
