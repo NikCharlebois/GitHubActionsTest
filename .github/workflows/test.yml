@@ -16,3 +16,5 @@ jobs:
       run: |
        git clone https://github.com/PowerShell/DscResource.Tests
        npm --silent install
+       Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
+       Invoke-AppveyorInstallTask
