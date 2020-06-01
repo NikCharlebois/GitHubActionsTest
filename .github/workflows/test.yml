@@ -49,4 +49,4 @@ jobs:
        Invoke-AppveyorTestScriptTask `
             -Type 'Harness' `
             -MainModulePath './modules/microsoft365dsc' `
-            -CodeCovIo
+            -CodeCovIo -Verbose
