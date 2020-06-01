@@ -23,5 +23,5 @@ jobs:
        Write-Information "Here"
        Invoke-AppveyorTestScriptTask `
             -Type 'Harness' `
-            -MainModulePath "./Modules/Microsoft365DSC" `
+            -MainModulePath "Modules\Microsoft365DSC" `
             -CodeCovIo
