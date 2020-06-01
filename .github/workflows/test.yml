@@ -45,7 +45,7 @@ jobs:
        $InformationPreference = 'Continue'
        Write-Information $dir
        Write-Information "Here"
-       $env:APPVEYOR_BUILD_FOLDER = "."
+       $env:APPVEYOR_BUILD_FOLDER = "tests"
        Invoke-AppveyorTestScriptTask `
             -Type 'Harness' `
             -MainModulePath "Modules\Microsoft365DSC" `
