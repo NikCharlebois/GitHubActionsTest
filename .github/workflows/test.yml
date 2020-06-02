@@ -14,37 +14,9 @@ jobs:
       shell: powershell
       run: |
        git clone https://github.com/PowerShell/DscResource.Tests
-       npm --silent install
-       winrm quickconfig -force
-       Install-Module AzureADPreview -RequiredVersion 2.0.2.102 -Force -SkipPublisherCheck
-       Install-Module ExchangeOnlineManagement -RequiredVersion 0.4578.0 -Force -SkipPublisherCheck
-       Install-Module DSCParser -RequiredVersion 1.1.0.3 -Force -SkipPublisherCheck
-       Install-Module Microsoft.Graph.Authentication -RequiredVersion 0.5.1 -Force -SkipPublisherCheck
-       Install-Module Microsoft.Graph.Identity.ConditionalAccess -RequiredVersion 0.5.1 -Force -SkipPublisherCheck
-       Install-Module Microsoft.PowerApps.Administration.PowerShell -RequiredVersion 2.0.64 -Force -SkipPublisherCheck
-       Install-Module MicrosoftTeams -RequiredVersion 1.0.6 -Force -SkipPublisherCheck
-       Install-Module MSCloudLoginAssistant -RequiredVersion 1.0.21 -Force -SkipPublisherCheck -AllowClobber
-       Install-Module ReverseDSC -RequiredVersion 2.0.0.3 -Force -SkipPublisherCheck
-       Install-Module SharePointPnPPowerShellOnline -RequiredVersion 3.21.2005.2 -Force -SkipPublisherCheck
-
-       $webClient = new-object System.Net.WebClient
-       $url = "https://github.com/Microsoft/Microsoft365DSC/blob/Dev/Tests/Dependencies/SharePointOnlineManagementShell_19515-12000_x64_en-us.msi?raw=true"
-       $path = $PSScriptRoot + "\SharePointOnlineManagementShell.msi"
-       $webClient.DownloadFile($url, $path)
-       msiexec /i $path /quiet /qn /norestart
-       Install-Module Microsoft.Online.SharePoint.PowerShell -RequiredVersion 16.0.19515.12000 -Force
-       Import-Module Microsoft.Online.SharePoint.PowerShell -Force
-       Import-Module SharePointPnpPowerShellOnline -Force
-       Import-Module MSCloudLoginAssistant -Force
-       Import-Module AzureADPreview -Force
-       Import-Module MicrosoftTeams -Force
-       [System.Environment]::SetEnvironmentVariable('M365DSCTelemetryEnabled', $false, [System.EnvironmentVariableTarget]::Machine)
+       
        Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
-       Invoke-AppveyorInstallTask -Verbose
-       $dir = dir |out-String
-       $InformationPreference = 'Continue'
-       Write-Information $dir
-       Write-Information "Here"
+       
        $env:APPVEYOR_BUILD_FOLDER = Get-Location | select -ExpandProperty Path
        $env:APPVEYOR_BUILD_VERSION = "1.0.0"
        Invoke-AppveyorAfterTestTask `
