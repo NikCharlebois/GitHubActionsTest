@@ -1,4 +1,4 @@
-name: Test Connection to Security and Compliance Center
+name: Generate Wiki Content
 on: [push]
 
 jobs:
