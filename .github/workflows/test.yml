@@ -1,24 +1,42 @@
-name: Generate Wiki Content
-on: [push]
+name: Unit Tests
+on: [pull_request]
 
 jobs:
+  # This workflow contains a single job called "build"
   build:
+    # The type of runner that the job will run on
     runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-    - name: Install Modules 
-      shell: powershell
+    - name: Install Dependencies
+      shell : powershell
       run: |
-       git clone https://github.com/PowerShell/DscResource.Tests       
-       Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
-       Invoke-AppveyorInstallTask
-       $env:APPVEYOR_BUILD_FOLDER = Get-Location | select -ExpandProperty Path
-       $env:APPVEYOR_BUILD_VERSION = "1.0.0"
-       Invoke-AppveyorAfterTestTask `
-            -Type 'Wiki' `
-            -MainModulePath 'Modules\Microsoft365DSC' `
-            -ResourceModuleName 'Microsoft365DSC'
-    - uses: actions/upload-artifact@v2
-      with:
-        name: WikiContent
-        path: D:\a\GitHubActionsTest\GitHubActionsTest\Microsoft365DSC_1.0.0_wikicontent.zip
+       [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+
+       $manifest = Import-PowerShellDataFile "./Modules/Microsoft365DSC/Microsoft365DSC.psd1"
+       $dependencies = $manifest.RequiredModules
+       foreach ($dependency in $dependencies)
+       {
+           Install-Module $dependency.ModuleName -RequiredVersion $dependency.RequiredVersion -Force -SkipPublisherCheck -AllowClobber -Scope AllUsers
+           try
+           {
+               Import-Module $dependency.ModuleName -Force
+           }
+           catch
+           {
+               Write-Verbose -Message $_
+           }
+       }
+    - name: Run Test Harness
+      shell : powershell
+      run: |
+        [System.Environment]::SetEnvironmentVariable('M365DSCTelemetryEnabled', $false, [System.EnvironmentVariableTarget]::Machine)
+        Import-Module './Tests/TestHarness.psm1' -Force
+        $results = Invoke-TestHarness 
+        if ($results.FailedCount -gt 0)
+        {
+            throw "{$($results.FailedCount)} Unit Test(s) Failed"
+        }
