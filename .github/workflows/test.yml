@@ -1,5 +1,5 @@
 name: Generate Wiki Content
-on: [pull_request]
+on: [push]
 
 jobs:
   build:
