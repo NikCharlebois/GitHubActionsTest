@@ -46,7 +46,7 @@ jobs:
        Write-Information $dir
        Write-Information "Here"
        $env:APPVEYOR_BUILD_FOLDER = Get-Location | select -ExpandProperty Path
-       Invoke-AppveyorTestScriptTask `
-            -Type 'Harness' `
+       Invoke-AppveyorAfterTestTask `
+            -Type 'Wiki' `
             -MainModulePath 'Modules\Microsoft365DSC' `
-            -CodeCovIo -Verbose
+            -ResourceModuleName 'Microsoft365DSC'
