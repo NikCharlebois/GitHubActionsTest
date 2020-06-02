@@ -7,7 +7,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: windows-latest
 
-    # Steps represent a sequence of tasks that will be executed as lpart of the job
+    # Steps represent a sequence of tasks that will be executed as lpart of the jobf
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
