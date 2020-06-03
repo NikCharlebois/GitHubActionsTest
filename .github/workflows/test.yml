@@ -33,6 +33,11 @@ jobs:
     - name: Run Test Harness
       shell : powershell
       run: |
+        git clone https://github.com/PowerShell/DscResource.Tests       
+        Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
+        Invoke-AppveyorInstallTask
+        $env:APPVEYOR_BUILD_FOLDER = Get-Location | select -ExpandProperty Path
+        $env:APPVEYOR_BUILD_VERSION = "1.0.0"
         [System.Environment]::SetEnvironmentVariable('M365DSCTelemetryEnabled', $false, [System.EnvironmentVariableTarget]::Machine)
         Import-Module './Tests/TestHarness.psm1' -Force
         $results = Invoke-TestHarness 
@@ -42,7 +47,50 @@ jobs:
         }
         $content = dir | Out-String
         $VerbosePreference = 'Continue'
-        Write-Verbose -Message $content        
+        Write-Verbose -Message $content
+        
+        # Get the code coverage result from build worker test run.
+        $entireCodeCoverage = $results.CodeCoverage
+
+        # Check whether we run in a container, and the build worker reported coverage
+        if ($testContainer.Count -gt 0)
+        {
+            # Loop thru each container result and add it to the main coverage.
+            foreach ($currentContainer in $testContainer)
+            {
+                if ($entireCodeCoverage)
+                {
+                    # Concatenate the code coverage result from the container test run.
+                    $containerCodeCoverage = $currentContainer.PesterResult.CodeCoverage
+                    if ($containerCodeCoverage)
+                    {
+                        $entireCodeCoverage.NumberOfCommandsAnalyzed += $containerCodeCoverage.NumberOfCommandsAnalyzed
+                        $entireCodeCoverage.NumberOfFilesAnalyzed += $containerCodeCoverage.NumberOfFilesAnalyzed
+                        $entireCodeCoverage.NumberOfCommandsExecuted += $containerCodeCoverage.NumberOfCommandsExecuted
+                        $entireCodeCoverage.NumberOfCommandsMissed += $containerCodeCoverage.NumberOfCommandsMissed
+                        $entireCodeCoverage.MissedCommands += $containerCodeCoverage.MissedCommands
+                        $entireCodeCoverage.HitCommands += $containerCodeCoverage.HitCommands
+                        $entireCodeCoverage.AnalyzedFiles += $containerCodeCoverage.AnalyzedFiles
+                    }
+                }
+                else
+                {
+                    # The container was the first to report code coverage.
+                    $entireCodeCoverage = $currentContainer.PesterResult.CodeCoverage
+                }
+            }
+        }
+
+        if ($entireCodeCoverage)
+        {
+            Write-Info -Message 'Uploading CodeCoverage to CodeCov.io...'
+            $jsonPath = Export-CodeCovIoJson -CodeCoverage $entireCodeCoverage -repoRoot $env:APPVEYOR_BUILD_FOLDER
+            Invoke-UploadCoveCoveIoReport -Path $jsonPath
+        }
+        else
+        {
+            Write-Warning -Message 'Could not create CodeCov.io report because Pester results object did not contain a CodeCoverage object'
+        }     
     - uses: actions/checkout@master
     - uses: codecov/codecov-action@v1
       with:
