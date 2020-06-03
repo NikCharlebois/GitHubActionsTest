@@ -41,7 +41,8 @@ jobs:
         [System.Environment]::SetEnvironmentVariable('M365DSCTelemetryEnabled', $false, [System.EnvironmentVariableTarget]::Machine)
     - name: Run DSCResource.Tests
       shell: powershell
-      run: |
+      run: |   
+        Import-Module -Name "./DscResource.Tests/AppVeyor.psm1"
         $moduleName = 'Microsoft365DSC'
         $mainModuleFolder = "Modules\$moduleName"
         Invoke-AppveyorTestScriptTask `
