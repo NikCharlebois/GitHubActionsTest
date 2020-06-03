@@ -30,7 +30,7 @@ jobs:
                Write-Verbose -Message $_
            }
        }
-    - name: Run Test Harness
+    - name: Pre-Setup
       shell : powershell
       run: |
         git clone https://github.com/PowerShell/DscResource.Tests       
@@ -38,8 +38,19 @@ jobs:
         Invoke-AppveyorInstallTask
         $env:APPVEYOR_BUILD_FOLDER = Get-Location | select -ExpandProperty Path
         $env:APPVEYOR_BUILD_VERSION = "1.0.0"
-        Invoke-AppveyorInstallTask -PesterMaximumVersion 3.4.3
         [System.Environment]::SetEnvironmentVariable('M365DSCTelemetryEnabled', $false, [System.EnvironmentVariableTarget]::Machine)
+    - name: Run DSCResource.Tests
+      shell: powershell
+      run: |
+        $moduleName = 'Microsoft365DSC'
+        $mainModuleFolder = "Modules\$moduleName"
+        Invoke-AppveyorTestScriptTask `
+            -Type 'Harness' `
+            -MainModulePath $mainModuleFolder `
+            -CodeCovIo
+    - name: Invoke TestHarness
+      shell: powershell
+      run: |
         Import-Module './Tests/TestHarness.psm1' -Force
         $results = Invoke-TestHarness 
         if ($results.FailedCount -gt 0)
